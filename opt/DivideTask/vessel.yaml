@@ -1,0 +1,80 @@
+Reproduc:
+  seed: 42
+  benchmark: false
+  deterministic: true
+CompressFramework:
+  Name: NFGR
+  ratio: 64
+  decompress: true
+  Compress:
+    divide:
+      divide_type: adaptotal_-1_-1_-1_4
+      param_alloc: by_size
+      param_size_thres: 26
+      exception: none
+    half: false
+    sampler:
+      name: randomcube                      # randomcube, randompoint
+      cube_count: 1
+      cube_len: [10000000,10000000,10000000]
+      sample_size: 100000
+      gpu_force: true
+    coords_mode: -1,1
+    preprocess:
+      denoise:
+        level: 0              # data noise range
+        close: [2,2,2]
+      clip: [0,65535]      
+    param:
+      init_net_path: none
+      filesize_ratio: 128     # compression ratio after compression
+      given_size: 0           # ideal bytes after compression
+    loss:
+      name: datal2
+      beta: 0.01
+      weight: [value_65535_65535_1] # weight: [value_min_max_weight]
+      weight_thres: 65535           # the weight under this threshold is set to 1
+    gpu: true
+    max_steps: 80000                # number of iterations
+    checkpoints: every_2000         # record and evaluate every n iterations
+    loss_log_freq: 200
+    lr_phi: 0.001
+    optimizer_name_phi: Adamax
+    lr_scheduler_phi:
+      name: MultiStepLR
+      milestones: [50000,60000,70000]
+      gamma: 0.2
+    decompress: true
+  Decompress:
+    sample_size: 10000
+    gpu: true
+    postprocess:
+      denoise:
+        level: 0                    
+        close: [2,2,2]
+      clip: [0,65535]
+    keep_decompressed: true
+    mip: true
+    mse: true      
+    psnr: true
+    ssim: true
+  Module:
+    phi:
+      coords_channel: 3             # the data dimension is 2 for 2D image data and 3 for 3D image data
+      data_channel: 1               # number of data channels: 1 for 1 channel and 3 for 3 channels
+      layers: 7
+      name: SIREN
+      w0: 10 # 30
+      output_act: false
+      res: false
+  Normalize:
+    name: minmaxany_0_100           
+Log:
+  outputs_dir: outputs
+  project_name: vessel
+  stdlog: false
+  tensorboard: true
+  time: true
+Dataset:
+  data_path: dataset/example/vessel-0_64-0_512-0_512.tif
+

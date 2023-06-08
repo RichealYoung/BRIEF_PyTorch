@@ -1,0 +1,97 @@
+Dynamic:
+  - PRODUCT:
+    - CONCAT:
+      - Dataset.data_path: dataset/brain/256x256x256/brain-0_256-0_256-0_256.tif
+        CompressFramework.Compress.param.filesize_ratio: 80
+        CompressFramework.Compress.max_steps: 100
+    - CONCAT:
+      - CompressFramework.Compress.divide.divide_type: adaptive_-1_-1_0_0_20
+        Log.project_name: adaptive
+      - CompressFramework.Compress.divide.divide_type: none
+        Log.project_name: none
+    
+Static:
+  Source:
+    gpucost: 20000 #Mbytes
+    cpucost: 20000 #Mbytes 
+  Reproduc:
+    seed: 42
+    benchmark: false
+    deterministic: true
+  CompressFramework:
+    Name: NFGR
+    Compress:
+      divide:
+        divide_type: none                     # adaptive_maxl_minl_varthr_ethr_Nb
+                                              # adaptotal_dnum_hnum_wnum_Nb
+                                              # every_dsize_hsize_wsize 
+                                              # total_nd_nh_nw  
+                                              # none
+        param_alloc: by_dv                    # by_dv by_size by_d equal
+        param_size_thres: 26
+        exception: none
+      half: false
+      sampler:
+        name: randomcube                      # randomcube, randompoint
+        cube_count: 1
+        cube_len: [10000000,10000000,10000000]
+        sample_size: 100000
+        gpu_force: true
+      coords_mode: -1,1
+      preprocess:
+        denoise:
+          level: 0              # data noise range
+          close: [2,2,2]
+        clip: [0,65535]      
+      param:
+        init_net_path: none
+        filesize_ratio: 10      # compression ratio after compression
+        given_size: 0           # ideal bytes after compression
+      loss:
+        name: datal2
+        beta: 0.01
+        weight: [value_65535_65535_1] # weight: [value_min_max_weight]
+        weight_thres: 65535           # the weight under this threshold is set to 1
+      gpu: true
+      max_steps: 20000                # number of iterations
+      checkpoints: every_2000         # record and evaluate every n iterations
+      loss_log_freq: 200
+      lr_phi: 0.001
+      optimizer_name_phi: Adamax
+      lr_scheduler_phi:
+        name: MultiStepLR
+        milestones: [50000,60000,70000]
+        gamma: 0.2
+      decompress: true
+    Decompress:
+      sample_size: 10000
+      gpu: true
+      postprocess:
+        denoise:
+          level: 0                    
+          close: [2,2,2]
+        clip: [0,65535]
+      keep_decompressed: true
+      mip: true
+      mse: true      
+      psnr: true
+      ssim: true
+    Module:
+      phi:
+        coords_channel: 3             # the data dimension is 2 for 2D image data and 3 for 3D image data
+        data_channel: 1               # number of data channels: 1 for 1 channel and 3 for 3 channels
+        layers: 5
+        name: SIREN
+        w0: 20 # 30
+        output_act: false
+        res: false
+    Normalize:
+      name: minmaxany_0_100           
+  Log:
+    outputs_dir: outputs
+    project_name: multi
+    stdlog: false
+    tensorboard: true
+    time: true
+  Dataset:
+    data_path: dataset/brain/256x256x256/brain-0_256-0_256-0_256.tif
