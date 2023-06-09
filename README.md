@@ -93,9 +93,10 @@ python deblock.py -stp outputs/${project}_${time}/steps${step}
 ```
 The deblocked result will be located in : **outputs/\${project}\_\${time}/steps\${step}/deblock**
 #### (2) C++ version
-Install xxxxx
+Prepare Ubuntu enviroments
 ```
-apt install xxx
+sudo apt-get update
+sudo apt-get install build-essential libtiff-dev
 ```
 Compile the source file
 ```
