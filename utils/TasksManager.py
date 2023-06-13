@@ -17,16 +17,7 @@ import datetime
 from urllib import request, parse
 pynvml.nvmlInit()
 platform = sys.platform
-USER = os.environ['USER']
-MIAOCODE = {'yrz':'t9qfTi1',
-            'bbncyrz':'t9qfTi1',
-            'xtx':'tubrHSG', 
-            'cyx':'', 
-            'qjy':'',
-            'yangrunzhao':''} # tuLGGSK
-def reminding(miao_code):
-    page = request.urlopen("http://miaotixing.com/trigger?" + parse.urlencode({"id":miao_code, "templ":'pmbXPGS,0,,,,,', "type":"json"}))
-    page.read()
+
 class Task:
     def __init__(self,command:str,name:str,gpucost:float,cpucost:float,cost_variable:str='none',status:str='pending'):
         self.command = command
@@ -312,13 +303,10 @@ class Queue():
         except Exception as e:
             print(e)
             self.stop(remind)
-    def stop(self,remind=True):#TODO 
+    def stop(self,remind=False):#TODO 
         for task in self.task_list:
             task.stop()
         if remind:
-            try:
-                miao_code = MIAOCODE[USER]
-                reminding(miao_code)
-            except:
-                print("can't connect to miao_reminding or miao_code not exist")
+            pass 
+            # print('Stop')
 
