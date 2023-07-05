@@ -26,7 +26,7 @@ import argparse
 from omegaconf import OmegaConf
 import torch.nn.functional as F
 from einops import rearrange
-from utils.TasksManager import MIAOCODE, USER, Queue, Task, reminding
+from utils.TasksManager import Queue, Task
 import copy
 from math import sqrt
 from utils.adaptive_blocking import OctTree, QuadTree, adaptive_cal_tree, cal_divide_num
