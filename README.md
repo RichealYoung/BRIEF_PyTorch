@@ -130,14 +130,14 @@ python main.py -p opt/DivideTask/hipct.yaml -g 0
 
 # Citations
 ```
-@article 
-{
-Yang2022.12.03.518948,
-author = {Yang, Runzhao and Xiao, Tingxiong and Cheng, Yuxiao and Li, Anan and Qu, Jinyuan and Liang, Rui and Bao, Shengda and Wang, Xiaofeng and Suo, Jinli and Luo, Qingming and Dai, Qionghai},
-title = {Sharing Massive Biomedical Data at Magnitudes Lower Bandwidth with Implicit Neural Function},
-year = {2022},
-doi = {10.1101/2022.12.03.518948},
-journal = {bioRxiv}
+@article{brief,
+  author  = {Runzhao Yang  and Tingxiong Xiao  and Yuxiao Cheng  and Anan Li  and Jinyuan Qu  and Rui Liang  and Shengda Bao  and Xiaofeng Wang  and Jue Wang  and Jinli Suo  and Qingming Luo  and Qionghai Dai },
+  journal = {Proceedings of the National Academy of Sciences},
+  number  = {28},
+  pages   = {e2320870121},
+  title   = {{Sharing Massive Biomedical Data at Magnitudes Lower Bandwidth Using Implicit Neural Function}},
+  volume  = {121},
+  year    = {2024}
 }
 ```
 # Contact
